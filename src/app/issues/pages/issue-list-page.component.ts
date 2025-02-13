@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { IssuesService } from '../services/issues.service';
 import { LabelsSelectorComponent } from "../components/labels-selector.component";
 import { IssueItemComponent } from "../components/issue-item.component";
-
+import { State } from '../types';
 @Component({
   selector: 'app-issue-list-page',
   imports: [LabelsSelectorComponent, IssueItemComponent],
@@ -15,9 +15,9 @@ import { IssueItemComponent } from "../components/issue-item.component";
     <!-- Filter -->
       <div class=" flex flex-col col-span-3">
         <div class="flex gap-2">
-          <button class="btn active">All</button>
-          <button class="btn">Open</button>
-          <button class="btn">Closed</button>
+          <button (click)="onChangeState('all')" [class.active]="issuesService.selectedState() === 'all'" class="btn">All</button>
+          <button (click)="onChangeState('open')" [class.active]="issuesService.selectedState() === 'open'" class="btn">Open</button>
+          <button (click)="onChangeState('closed')" [class.active]="issuesService.selectedState() === 'closed'" class="btn">Closed</button>
         </div>
       </div>
 
@@ -68,5 +68,15 @@ export default class IssueListPageComponent {
 
   get issuesQuery() {
     return this.issuesService.issuesQuery;
+  }
+
+  onChangeState(newState: string) {
+    const state = {
+      all: State.All,
+      open: State.Open,
+      closed: State.Closed,
+    }[newState] ?? State.All;
+
+    this.issuesService.showIssuesByState(state);
   }
 }
