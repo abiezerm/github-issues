@@ -6,7 +6,6 @@ const BASE_URL =  environment.baseUrl;
 const GITHUB_TOKEN = environment.gitHubToken;
 
 export const getIssueById = async (issueId: string): Promise<GitHubIssue> => {
-  await sleep(1500);
 
   try {
     const resp = await fetch(`${BASE_URL}/issues/${issueId}`, {
@@ -22,6 +21,6 @@ export const getIssueById = async (issueId: string): Promise<GitHubIssue> => {
     return issues;
   } catch (error) {
     console.error(error);
-    throw "can't load issues";
+    throw `can't load issue ${issueId}`;
   }
 }
